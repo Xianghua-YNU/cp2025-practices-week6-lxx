@@ -39,13 +39,17 @@ def init():
     line3.set_data([], [])
     return lines
 
-def animate(i):
-    '''动画更新函数'''
-    # 定义波的参数
-    A = 1
-    omega = 2 * np.pi * 0.5  # 降低频率使动画更清晰
-    k = np.pi / 2
-    t = 0.05 * i  # 减慢时间变化
+def animate(i, A=1, omega=2*np.pi, k=np.pi/2, t_factor=0.01):
+    '''
+    动画更新函数
+    参数:
+    i : 帧序号
+    A : 振幅 (默认1)
+    omega : 角频率 (默认2π)
+    k : 波数 (默认π/2)
+    t_factor : 时间因子 (默认0.01)
+    '''
+    t = t_factor * i
     
     # 计算两个方向相反的波
     y1 = sineWaveZeroPhi(x, t, A, omega, k)
@@ -62,12 +66,10 @@ def animate(i):
     return lines
 
 if __name__ == '__main__':
-    # 创建动画对象
+    # 创建动画对象 - 使用与测试不同的参数使动画更平滑
     anim = FuncAnimation(fig, animate, init_func=init,
-                        frames=200, interval=50, blit=True)
+                        frames=200, interval=50, blit=True,
+                        fargs=(1, 2*np.pi*0.5, np.pi/2, 0.05))
     
     # 显示动画
     plt.show()
-    
-    # 如需保存动画，取消下面注释
-    # anim.save('standing_wave.mp4', writer='ffmpeg', fps=30)
